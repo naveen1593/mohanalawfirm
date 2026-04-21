@@ -339,6 +339,11 @@ section {
     margin-right: auto;
 }
 
+.feature-icon-small {
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+}
+
 .feature-item h4 {
     color: var(--white);
     margin-bottom: 0.5rem;

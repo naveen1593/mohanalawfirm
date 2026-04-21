@@ -21,9 +21,6 @@ const ENTRY_PHONE   = 'entry.1539032013';
 const ENTRY_SERVICE = 'entry.2128844983';
 const ENTRY_MESSAGE = 'entry.1376411838';
 
-// WhatsApp number
-const WHATSAPP_NUMBER = '918870574632';
-
 // ===========================
 // Smooth Scrolling
 // ===========================
@@ -86,25 +83,6 @@ function submitToGoogleForm(formData) {
 }
 
 // ===========================
-// WhatsApp Message Builder
-// ===========================
-function sendWhatsApp(formData) {
-    const text = `📩 *New Legal Consultation Request*
-
-*Name:* ${formData.name}
-*Email:* ${formData.email}
-*Phone:* ${formData.phone}
-*Service:* ${formData.service}
-
-*Case Details:*
-${formData.message}`;
-
-    const encoded = encodeURIComponent(text);
-    const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encoded}`;
-    window.open(url, '_blank');
-}
-
-// ===========================
 // Form Submission Handler
 // ===========================
 const contactForm = document.getElementById('contactForm');
@@ -138,11 +116,9 @@ if (contactForm) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
 
-        // Submit to Google Form (saves to Google Sheets + triggers email notification)
+        // Submit to Google Form (saves to Google Sheets + triggers WhatsApp & email via Apps Script)
         submitToGoogleForm(formData)
             .then(function () {
-                // Open WhatsApp with pre-filled message
-                sendWhatsApp(formData);
 
                 // Show success
                 submitBtn.textContent = '✓ Sent Successfully!';
@@ -158,13 +134,9 @@ if (contactForm) {
             })
             .catch(function (error) {
                 console.error('Google Form error:', error);
-
-                // Still open WhatsApp as fallback
-                sendWhatsApp(formData);
-
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Your Query';
-                alert('Your query has been sent via WhatsApp. You can also email us at mohanalawfirm@gmail.com');
+                alert('Something went wrong. Please try again or contact us directly at mohanalawfirm@gmail.com');
             });
     });
 }
